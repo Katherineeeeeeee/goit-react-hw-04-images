@@ -1,35 +1,49 @@
 import { Component } from 'react';
+
 import PropTypes from 'prop-types';
 
 import ImageGalleryItem from './ImageGalleryItem';
-import Loader from '../Loader';
-import Button from '../Button';
+import Loader from '../Loader/Loader';
+import Button from '../Button/Button';
 
-// import Api from '../api/Api';
 import Pixabay from 'components/api/Api';
 import s from './ImageGallery.module.scss';
 
 class ImageGallery extends Component {
   state = {
     images: null,
-    loading: false,
+    loading: 1,
     error: null,
     page: 1,
-
-    // search: '',
+    total: null,
   };
   async componentDidUpdate(prevProps, prevState) {
-    const { page } = this.state;
+    const { page, total } = this.state;
 
-    const prevImage = prevProps.search;
+    const prevImage = prevProps.query;
     const nextImage = this.props.query;
 
     if (prevImage !== nextImage) {
       try {
         this.setState({ loading: true, page: 1 });
         const responce = await Pixabay(page, nextImage);
-        this.setState({ images: responce.data.hits });
-        // console.log('responce :>> ', responce);
+        this.setState({
+          images: responce.data.hits,
+          total: responce.data.total,
+        });
+      } catch (error) {
+        console.log('error', error);
+        console.log('message', error.message);
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
+
+    if (prevState.page !== page && page !== 1) {
+      try {
+        this.setState({ loading: true });
+        const responce = await Pixabay(page, nextImage);
+        this.setState({ images: [...prevState.images, ...responce.data.hits] });
       } catch (error) {
         console.log('error', error);
       } finally {
@@ -45,7 +59,7 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { images, loading, error } = this.state;
+    const { page, images, loading, error, total } = this.state;
     const { loadMore } = this;
 
     return (
@@ -55,9 +69,9 @@ class ImageGallery extends Component {
         {images && (
           <>
             <ul className={s.gallery}>
-              {images?.map(({ id, webformatURL, largeImageURL, tags }) => (
+              {images?.map(({ webformatURL, largeImageURL, tags }) => (
                 <ImageGalleryItem
-                  key={id}
+                  key={webformatURL}
                   webformatURL={webformatURL}
                   largeImageURL={largeImageURL}
                   tags={tags}
@@ -66,7 +80,7 @@ class ImageGallery extends Component {
             </ul>
           </>
         )}
-        <Button onClick={loadMore} title="Load more" />
+        {12 * page <= total && <Button onClick={loadMore} text={'Load more'} />}
       </>
     );
   }
@@ -84,5 +98,3 @@ export default ImageGallery;
 //     })
 //   ),
 // };
-
-//в map має бути ще один параметр - функція, яка рендерить картинки

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
-import s from './ImageFinder.module.scss';
+import PropTypes from 'prop-types';
+import s from './Searchbar.module.scss';
 
 class Searchbar extends Component {
   state = {
@@ -53,3 +54,6 @@ class Searchbar extends Component {
 }
 
 export default Searchbar;
+Searchbar.propTypes = {
+  search: PropTypes.string,
+};

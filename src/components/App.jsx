@@ -1,23 +1,15 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import axios from 'axios';
-
-import { getImages } from './api/Api';
-
 import s from './ImageFinder.module.scss';
 
-import Searchbar from './Searchbar';
+import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './Gallery/ImageGallery';
-// import Loader from './Loader';
-// import Button from './Button';
+
 // import Modal from './Modal';
 
 export class App extends Component {
   state = {
-    // items: null,
-    // loading: false,
-    // error: null,
     page: 1,
     search: '',
   };
@@ -88,16 +80,13 @@ export class App extends Component {
   // };
 
   render() {
-    const { search, error } = this.state;
+    const { search } = this.state;
 
     return (
       <div>
         {/* <Searchbar onChange={this.handleChange} value={search} /> Vlad*/}
         <Searchbar onSubmit={this.handleSearch} />
         <ImageGallery query={search} />
-        {/* {loading && <Loader />} */}
-        {error && <p>не грузить</p>}
-        {/* <Button onClick={loadMore} title="Load more" /> */}
         {/* <Modal /> */}
         <ToastContainer />
       </div>

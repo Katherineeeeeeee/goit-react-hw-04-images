@@ -1,7 +1,9 @@
+import s from './Modal.module.scss';
+
 const Modal = () => {
   return (
-    <div className="overlay">
-      <div className="modal">
+    <div className={s.overlay}>
+      <div className={s.modal}>
         <img src="" alt="" />
       </div>
     </div>

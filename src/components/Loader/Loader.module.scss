@@ -1,0 +1,11 @@
+.loader {
+  position: absolute;
+  bottom: 200px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(200, 200, 200, 0.2);
+}
