@@ -37,10 +37,16 @@
 
 .searchFormButton {
   display: inline-block;
-  width: 48px;
+  width: 100px;
   height: 48px;
   border: 0;
-  background-size: 40%;
+  background: rgb(176, 28, 99);
+  background: linear-gradient(
+    180deg,
+    rgba(176, 28, 99, 0.8477984943977591) 2%,
+    rgba(244, 69, 13, 0.7693671218487395) 100%
+  );
+  background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.6;
@@ -51,18 +57,6 @@
 
 .searchFormButton:hover {
   opacity: 1;
-}
-
-.searchFormButtonLabel {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  clip-path: inset(50%);
-  border: 0;
 }
 
 .searchFormInput {

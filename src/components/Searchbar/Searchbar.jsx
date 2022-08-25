@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PropTypes from 'prop-types';
 import s from './Searchbar.module.scss';
 
@@ -15,10 +16,9 @@ class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.search.trim() === '') {
-      //not working correct
-      // toast('choose another word');
-      return alert('choose another word');
+      return toast('🧐 Please try again.');
     }
+
     this.props.onSubmit(this.state.search);
     this.setState({ search: '' });
   };
@@ -28,7 +28,7 @@ class Searchbar extends Component {
       <header className={s.searchbar}>
         <form className={s.searchForm} onSubmit={this.handleSubmit}>
           <button type="submit" className={s.searchFormButton}>
-            <span className={s.searchFormButtonLabel}>Search</span>
+            🔍
           </button>
 
           <input
@@ -37,16 +37,9 @@ class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            //РЕПЕТА
             name="search"
             value={this.state.search}
             onChange={this.handleChange}
-            //РЕПЕТА
-
-            //так сказав Влад
-            // onChange={this.props.onChange}
-            // value={this.props.value}
-            //так сказав Влад
           />
         </form>
       </header>

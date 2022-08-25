@@ -32,5 +32,3 @@ ImageGalleryItem.propTypes = {
   tags: PropTypes.string,
   toggleModal: PropTypes.func,
 };
-
-// має бути ще один параметр - функція, яка рендерить картинки

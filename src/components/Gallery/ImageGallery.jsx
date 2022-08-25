@@ -1,14 +1,12 @@
 import { Component } from 'react';
-
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import Pixabay from 'components/api/Api';
+import s from './ImageGallery.module.scss';
 
 import ImageGalleryItem from './ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
-
-import Pixabay from 'components/api/Api';
-import s from './ImageGallery.module.scss';
 
 class ImageGallery extends Component {
   state = {
@@ -65,8 +63,7 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { page, images, loading, error, total, showModal, largeImageURL } =
-      this.state;
+    const { page, images, loading, error, total, largeImageURL } = this.state;
     const { loadMore, toggleModal } = this;
 
     return (
@@ -97,13 +94,12 @@ class ImageGallery extends Component {
 
 export default ImageGallery;
 
-// ImageGallery.propTypes = {
-//   images: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       webformatURL: PropTypes.string.isRequired,
-//       largeImageURL: PropTypes.string.isRequired,
-//       tags: PropTypes.string.isRequired,
-//     })
-//   ),
-// };
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string,
+    })
+  ),
+};
