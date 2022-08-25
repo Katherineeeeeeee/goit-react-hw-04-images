@@ -6,8 +6,6 @@ import { ToastContainer } from 'react-toastify';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './Gallery/ImageGallery';
 
-// import Modal from './Modal';
-
 export class App extends Component {
   state = {
     page: 1,
@@ -25,7 +23,6 @@ export class App extends Component {
       <div>
         <Searchbar onSubmit={this.handleSearch} />
         <ImageGallery query={search} />
-        {/* <Modal /> */}
         <ToastContainer />
       </div>
     );

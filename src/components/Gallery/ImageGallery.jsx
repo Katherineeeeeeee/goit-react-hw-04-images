@@ -1,10 +1,11 @@
 import { Component } from 'react';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import ImageGalleryItem from './ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
+import Modal from '../Modal/Modal';
 
 import Pixabay from 'components/api/Api';
 import s from './ImageGallery.module.scss';
@@ -12,10 +13,11 @@ import s from './ImageGallery.module.scss';
 class ImageGallery extends Component {
   state = {
     images: null,
-    loading: 1,
+    loading: false,
     error: null,
     page: 1,
     total: null,
+    largeImageURL: '',
   };
   async componentDidUpdate(prevProps, prevState) {
     const { page, total } = this.state;
@@ -58,9 +60,14 @@ class ImageGallery extends Component {
     }));
   };
 
+  toggleModal = largeImageURL => {
+    this.setState({ largeImageURL });
+  };
+
   render() {
-    const { page, images, loading, error, total } = this.state;
-    const { loadMore } = this;
+    const { page, images, loading, error, total, showModal, largeImageURL } =
+      this.state;
+    const { loadMore, toggleModal } = this;
 
     return (
       <>
@@ -75,12 +82,14 @@ class ImageGallery extends Component {
                   webformatURL={webformatURL}
                   largeImageURL={largeImageURL}
                   tags={tags}
+                  toggleModal={toggleModal}
                 />
               ))}
             </ul>
           </>
         )}
         {12 * page <= total && <Button onClick={loadMore} text={'Load more'} />}
+        {largeImageURL && <Modal onClose={toggleModal} src={largeImageURL} />}
       </>
     );
   }
