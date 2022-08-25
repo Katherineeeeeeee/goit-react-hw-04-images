@@ -18,7 +18,7 @@ class ImageGallery extends Component {
     largeImageURL: '',
   };
   async componentDidUpdate(prevProps, prevState) {
-    const { page, total } = this.state;
+    const { page } = this.state;
 
     const prevImage = prevProps.query;
     const nextImage = this.props.query;
