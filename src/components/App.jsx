@@ -11,17 +11,23 @@ export class App extends Component {
   };
 
   handleSearch = search => {
-    this.setState({ search });
+    this.setState({ search, page: 1 });
+  };
+
+  loadMore = () => {
+    this.setState(({ page }) => ({
+      page: page + 1,
+    }));
   };
 
   render() {
-    const { search } = this.state;
+    const { search, page } = this.state;
 
     return (
       <div>
         <ToastContainer autoClose={3000} />
         <Searchbar onSubmit={this.handleSearch} />
-        <ImageGallery query={search} />
+        <ImageGallery query={search} page={page} loadMore={this.loadMore} />
       </div>
     );
   }

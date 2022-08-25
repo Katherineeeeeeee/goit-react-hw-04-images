@@ -13,12 +13,13 @@ class ImageGallery extends Component {
     images: null,
     loading: false,
     error: null,
-    page: 1,
+    // page: 1,
     total: null,
     largeImageURL: '',
   };
   async componentDidUpdate(prevProps, prevState) {
-    const { page } = this.state;
+    // const { page } = this.state;
+    const { page } = this.props;
 
     const prevImage = prevProps.query;
     const nextImage = this.props.query;
@@ -39,7 +40,7 @@ class ImageGallery extends Component {
       }
     }
 
-    if (prevState.page !== page && page !== 1) {
+    if (prevProps.page !== page && page !== 1) {
       try {
         this.setState({ loading: true });
         const responce = await Pixabay(page, nextImage);
@@ -52,11 +53,11 @@ class ImageGallery extends Component {
     }
   }
 
-  loadMore = () => {
-    this.setState(({ page }) => ({
-      page: page + 1,
-    }));
-  };
+  // loadMore = () => {
+  //   this.setState(({ page }) => ({
+  //     page: page + 1,
+  //   }));
+  // };
 
   toggleModal = largeImageURL => {
     this.setState({ largeImageURL });
@@ -64,7 +65,8 @@ class ImageGallery extends Component {
 
   render() {
     const { page, images, loading, error, total, largeImageURL } = this.state;
-    const { loadMore, toggleModal } = this;
+    const { toggleModal } = this;
+    const { loadMore } = this.props;
 
     return (
       <>
