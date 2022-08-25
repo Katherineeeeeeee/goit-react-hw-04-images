@@ -4,7 +4,7 @@ import { TailSpin } from 'react-loader-spinner';
 export default function Loader() {
   return (
     <div className={s.loader}>
-      <TailSpin color="#000" height="150" width="150" />
+      <TailSpin color="#B01C63" height="150" width="150" />
     </div>
   );
 }

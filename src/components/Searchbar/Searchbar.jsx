@@ -15,6 +15,7 @@ class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.search.trim() === '') {
+      //not working correct
       // toast('choose another word');
       return alert('choose another word');
     }
