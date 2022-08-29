@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Pixabay from 'components/api/Api';
 import s from './ImageGallery.module.scss';
@@ -8,91 +8,83 @@ import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 
-class ImageGallery extends Component {
-  state = {
-    images: null,
-    loading: false,
-    error: null,
-    // page: 1,
-    total: null,
-    largeImageURL: '',
-  };
-  async componentDidUpdate(prevProps, prevState) {
-    // const { page } = this.state;
-    const { page } = this.props;
+const ImageGallery = ({ page, query, loadMore }) => {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [total, setTotal] = useState(null);
+  const [largeImageURL, setLargeImageURL] = useState('');
 
-    const prevImage = prevProps.query;
-    const nextImage = this.props.query;
+  useEffect(() => {
+    if (query) {
+      fetchImages();
+    }
 
-    if (prevImage !== nextImage) {
+    async function fetchImages() {
       try {
-        this.setState({ loading: true, page: 1 });
-        const responce = await Pixabay(page, nextImage);
-        this.setState({
-          images: responce.data.hits,
-          total: responce.data.total,
-        });
+        setLoading(true, page);
+        const { data } = await Pixabay(page, query);
+        setImages(data.hits);
+        setTotal(data.total);
       } catch (error) {
-        console.log('error', error);
+        setError(error);
         console.log('message', error.message);
       } finally {
-        this.setState({ loading: false });
+        setLoading(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
-    if (prevProps.page !== page && page !== 1) {
+  useEffect(() => {
+    if (page !== '' && page !== 1) {
+      fetchImages();
+    }
+
+    async function fetchImages() {
       try {
-        this.setState({ loading: true });
-        const responce = await Pixabay(page, nextImage);
-        this.setState({ images: [...prevState.images, ...responce.data.hits] });
+        setLoading(true);
+        const { data } = await Pixabay(page, query);
+        setImages([...images, ...data.hits]);
+        setTotal(data.total);
       } catch (error) {
-        console.log('error', error);
+        setError(error);
+        console.log('message', error.message);
       } finally {
-        this.setState({ loading: false });
+        setLoading(false);
       }
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
 
-  // loadMore = () => {
-  //   this.setState(({ page }) => ({
-  //     page: page + 1,
-  //   }));
-  // };
-
-  toggleModal = largeImageURL => {
-    this.setState({ largeImageURL });
+  const toggleModal = largeImageURL => {
+    setLargeImageURL(largeImageURL);
   };
 
-  render() {
-    const { page, images, loading, error, total, largeImageURL } = this.state;
-    const { toggleModal } = this;
-    const { loadMore } = this.props;
-
-    return (
-      <>
-        {error && <p>(error.message)</p>}
-        {loading && <Loader />}
-        {images && (
-          <>
-            <ul className={s.gallery}>
-              {images?.map(({ webformatURL, largeImageURL, tags }) => (
-                <ImageGalleryItem
-                  key={webformatURL}
-                  webformatURL={webformatURL}
-                  largeImageURL={largeImageURL}
-                  tags={tags}
-                  toggleModal={toggleModal}
-                />
-              ))}
-            </ul>
-          </>
-        )}
-        {12 * page <= total && <Button onClick={loadMore} text={'Load more'} />}
-        {largeImageURL && <Modal onClose={toggleModal} src={largeImageURL} />}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {error && <p>(error.message)</p>}
+      {loading && <Loader />}
+      {images && (
+        <>
+          <ul className={s.gallery}>
+            {images?.map(({ webformatURL, largeImageURL, tags }) => (
+              <ImageGalleryItem
+                key={webformatURL}
+                webformatURL={webformatURL}
+                largeImageURL={largeImageURL}
+                tags={tags}
+                toggleModal={toggleModal}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+      {12 * page <= total && <Button onClick={loadMore} text={'Load more'} />}
+      {largeImageURL && <Modal onClose={toggleModal} src={largeImageURL} />}
+    </>
+  );
+};
 
 export default ImageGallery;
 
